@@ -28,15 +28,13 @@ def fix_col_nm(df):
 password = secrets.db_pass()
 engine = sql.create_engine('mysql+pymysql://loader:'+password+'@gmidata4good.cloudapp.net:3306/data4good')
 
-# my_df = pd.read_excel('MN Postsecondary Data (2015).xlsx', header=2, sheetname='Appendix A PS Enrollment')
-# my_df = fix_col_nm(my_df)
-# my_df.to_sql('post_secondary_stg', engine, schema='data4good')
 
 def load_csv(folder):
     in_dir = '/Users/dreyco676/Desktop/SDS/' + folder + '/'
     for filename in glob.glob(in_dir + '*.csv'):
         print(filename)
         short_nm = basename(filename).replace('-', '').replace('.csv', '')
+        short_nm = re.sub(r'\s+', '', short_nm)
         # shorten file name
         sheet_loc = short_nm.find('Sheet')
         if sheet_loc != -1:
@@ -55,5 +53,4 @@ def load_csv(folder):
     return 0
 
 
-enroll_data = load_csv('enroll')
-#grad_data = load_csv('grad')
+enroll_data = load_csv('staff')
